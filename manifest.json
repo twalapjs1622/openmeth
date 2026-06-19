@@ -1,0 +1,23 @@
+{
+  "name": "openmythos-recurrent-thinking",
+  "version": "1.0.0",
+  "description": "Intercepts AI model thinking and reroutes through OpenMythos recurrent reasoning blocks powered by numpy",
+  "author": "OpenMythos",
+  "entry": "plugin.py",
+  "hooks": [
+    "pre_think",
+    "during_think",
+    "post_think",
+    "token_stream"
+  ],
+  "config_schema": "config.yaml",
+  "permissions": [
+    "think_intercept",
+    "token_modification",
+    "stream_manipulation"
+  ],
+  "requires": {
+    "numpy": ">=1.24.0"
+  },
+  "tags": ["reasoning", "thinking", "recurrent", "mythos"]
+}

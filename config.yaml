@@ -1,0 +1,105 @@
+YAML # OpenMythos Recurrent Thinking Configuration
+
+engine:
+  # Core engine settings
+  enabled: true
+  debug: false
+  device: "cpu"  # numpy runs on cpu
+  
+  # Recurrent block configuration
+  recurrent:
+    # Number of recurrent refinement passes per thinking step
+    depth: 4
+    # Hidden dimension for internal representations
+    hidden_dim: 768
+    # Number of attention heads in multi-head attention
+    num_heads: 12
+    # Dropout rate for regularization
+    dropout: 0.1
+    # Maximum recurrence depth before forced output
+    max_recurrence: 8
+    # Convergence threshold - stop recurrence when change < threshold
+    convergence_threshold: 1e-4
+    # Whether to use layer normalization
+    layer_norm: true
+    # Residual connection strength (0.0 to 1.0)
+    residual_alpha: 0.5
+
+  # OpenMythos archetypal reasoning modes
+  mythos:
+    # Available archetypes and their weights
+    archetypes:
+      explorer:
+        weight: 0.25
+        description: "Divergent exploration of possibility space"
+        temperature: 1.2
+        recurrence_bias: "expansion"
+      architect:
+        weight: 0.25
+        description: "Structural pattern formation and synthesis"
+        temperature: 0.8
+        recurrence_bias: "structuring"
+      critic:
+        weight: 0.25
+        description: "Evaluation, contradiction detection, refinement"
+        temperature: 0.6
+        recurrence_bias: "compression"
+      oracle:
+        weight: 0.25
+        description: "Intuitive pattern completion and insight"
+        temperature: 1.0
+        recurrence_bias: "integration"
+    
+    # How archetypes are combined
+    fusion_method: "weighted_attention"  # weighted_attention, gating, voting
+    # Enable archetype rotation during deep recurrence
+    rotate_on_recurrence: true
+    # Minimum number of archetypes that must contribute
+    min_active_archetypes: 2
+
+  # Reasoning graph configuration
+  reasoning:
+    # Chain-of-thought depth
+    chain_depth: 5
+    # Tree branching factor for tree-of-thought
+    tree_branching: 3
+    # Maximum graph nodes for graph-of-thought
+    max_graph_nodes: 32
+    # Enable cross-reasoning-path attention
+    cross_path_attention: true
+    # Reasoning step embedding dimension
+    step_embedding_dim: 128
+
+  # Thinking interceptor settings
+  interceptor:
+    # Pattern to detect thinking blocks
+    think_patterns:
+      - "<think>"
+      - "<thinking>"
+      - "<reasoning>"
+      - "[THINK]"
+      - "```thinking"
+    # End patterns
+    end_patterns:
+      - "</think>"
+      - "</thinking>"
+      - "</reasoning>"
+      - "[/THINK]"
+      - "```"
+    # Whether to inject recurrent processing mid-stream
+    mid_stream_injection: true
+    # Buffer size for accumulating thinking tokens before processing
+    token_buffer_size: 64
+    # Flush interval in tokens
+    flush_interval: 32
+
+  # Numpy backend settings
+  numpy:
+    # Float precision
+    dtype: "float32"
+    # Enable BLAS optimizations
+    use_blas: true
+    # Random seed for reproducibility (null for random)
+    random_seed: null
+    # Memory limit in MB for intermediate tensors
+    memory_limit_mb: 512
