@@ -2,8 +2,8 @@
 # =============================================================================
 # OpenMythos Lightweight Reasoning Hook
 # =============================================================================
-# A faster alternative to hook_main.sh that uses heuristic reasoning
-# instead of the full numpy engine. Lower latency, less thorough.
+# Fixed: Shell injection vulnerability patched — uses stdin piping instead
+# of string interpolation to avoid code injection from malicious tool requests.
 # =============================================================================
 set -euo pipefail
 
@@ -22,9 +22,12 @@ if [ -z "$REQUEST" ]; then
     exit 0
 fi
 
-RESULT=$(python3 -c "
+# FIXED: use stdin instead of string interpolation
+RESULT=$(echo "$REQUEST" | python3 -c "
 import json, sys
-req = json.loads(sys.argv[1]) if sys.argv[1] else {}
+# Read from stdin — prevents injection
+request_json = sys.stdin.read().strip()
+req = json.loads(request_json) if request_json else {}
 tool = req.get('name', '')
 args = req.get('arguments', {})
 
@@ -45,6 +48,6 @@ enriched = {**req, '_mythos': {
     'mode': 'lightweight'
 }}
 print(json.dumps(enriched))
-" "$REQUEST" 2>/dev/null)
+" 2>/dev/null)
 
 echo "$RESULT"
