@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "<string>", line 6, in <module>
+    plugin = OpenMythosPlugin()
+  File "/tmp/openmeth/plugin.py", line 40, in __init__
+    self.engine = ReasoningEngine()
+                  ~~~~~~~~~~~~~~~^^
+TypeError: ReasoningEngine.__init__() missing 5 required positional arguments: 'recurrent_stack', 'chain', 'tree', 'graph', and 'config'
+Traceback (most recent call last):
+  File "<string>", line 6, in <module>
+    plugin = OpenMythosPlugin()
+  File "/tmp/openmeth/plugin.py", line 97, in __init__
+    self.engine = _build_default_engine()
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/tmp/openmeth/plugin.py", line 61, in _build_default_engine
+    "mythos": MythosBlock(hidden_dim, dtype=dtype),
+              ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/openmeth/openmythos/blocks/mythos_block.py", line 151, in __init__
+    archetypes_cfg = config.get("archetypes", {})
+                     ^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
