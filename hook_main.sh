@@ -2,8 +2,8 @@
 # =============================================================================
 # OpenMythos Recurrent Thinking Hook for OpenCode/Crush
 # =============================================================================
-# Entry point for PreToolUse hook. Calls the Python reasoning engine via
-# subprocess to intercept and analyze tool use before it executes.
+# Fixed: Shell injection vulnerability patched — uses stdin piping instead
+# of string interpolation to avoid code injection from malicious tool requests.
 # =============================================================================
 set -euo pipefail
 
@@ -27,18 +27,21 @@ if [ -z "$REQUEST" ]; then
     exit 0
 fi
 
-# Run the OpenMythos reasoning engine
-RESULT=$(python3 -c "
+# Run the OpenMythos reasoning engine — FIXED: use stdin to avoid injection
+RESULT=$(echo "$REQUEST" | python3 -c "
 import sys, json
 sys.path.insert(0, '${ENGINE_DIR}')
 from plugin import OpenMythosPlugin
 
 plugin = OpenMythosPlugin()
+# Read from stdin instead of interpolating into code — prevents injection
+request_json = sys.stdin.read().strip()
 try:
-    result = plugin.process('''${REQUEST}''')
+    result = plugin.process(request_json)
     print(result)
-except Exception:
-    print('''${REQUEST}''')
+except Exception as e:
+    # Fail gracefully — return original request
+    print(request_json)
 " 2>>"$LOG")
 
 # Return the enriched result
