@@ -1,0 +1,5 @@
+{
+  "hooks": {
+    "PreToolUse": "bash /path/to/openmeth/hook_main.sh"
+  }
+}

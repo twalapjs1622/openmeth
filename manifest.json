@@ -1,23 +1,29 @@
 {
   "name": "openmythos-recurrent-thinking",
-  "version": "1.0.0",
-  "description": "Intercepts AI model thinking and reroutes through OpenMythos recurrent reasoning blocks powered by numpy",
+  "version": "2.0.0",
+  "description": "Intercepts AI tool usage and reroutes through OpenMythos recurrent reasoning blocks for enhanced decision analysis. Compatible with OpenCode/Crush hook system.",
   "author": "OpenMythos",
-  "entry": "plugin.py",
+  "engine": "OpenCode/Crush Hook System",
   "hooks": [
-    "pre_think",
-    "during_think",
-    "post_think",
-    "token_stream"
+    {
+      "event": "PreToolUse",
+      "script": "hook_main.sh",
+      "description": "Main reasoning hook - intercepts tool use via full numpy engine"
+    },
+    {
+      "event": "PreToolUse",
+      "script": "hook_reasoning.sh",
+      "description": "Lightweight reasoning hook - fast heuristic analysis"
+    }
   ],
-  "config_schema": "config.yaml",
-  "permissions": [
-    "think_intercept",
-    "token_modification",
-    "stream_manipulation"
-  ],
-  "requires": {
+  "entry_point": "hook_main.sh",
+  "config": "crush.json",
+  "dependencies": {
+    "python3": ">=3.8",
     "numpy": ">=1.24.0"
   },
-  "tags": ["reasoning", "thinking", "recurrent", "mythos"]
+  "permissions": [
+    "tool_analysis",
+    "request_enrichment"
+  ]
 }
